@@ -1,0 +1,40 @@
+<aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+        <h1 class="admin-logo">NightMarket</h1>
+        <p class="admin-logo-subtitle">{{ 'admin.sidebar.title'|trans }}</p>
+    </div>
+
+    <nav class="admin-nav">
+        <a href="{{ path('app_admin_dashboard') }}" class="admin-nav-item {{ app.request.attributes.get('_route') == 'app_admin_dashboard' ? 'active' : '' }}">
+            <span class="admin-nav-icon">📊</span>
+            <span class="admin-nav-text">{{ 'admin.sidebar.dashboard'|trans }}</span>
+        </a>
+
+        <a href="{{ path('app_admin_products') }}" class="admin-nav-item {{ app.request.attributes.get('_route') starts with 'app_admin_products' ? 'active' : '' }}">
+            <span class="admin-nav-icon">📦</span>
+            <span class="admin-nav-text">{{ 'admin.sidebar.products'|trans }}</span>
+        </a>
+
+        <a href="{{ path('app_admin_categories') }}" class="admin-nav-item {{ app.request.attributes.get('_route') starts with 'app_admin_categories' ? 'active' : '' }}">
+            <span class="admin-nav-icon">🏷️</span>
+            <span class="admin-nav-text">{{ 'admin.sidebar.categories'|trans }}</span>
+        </a>
+
+        <a href="{{ path('app_admin_orders') }}" class="admin-nav-item {{ app.request.attributes.get('_route') starts with 'app_admin_order' ? 'active' : '' }}">
+            <span class="admin-nav-icon">🛒</span>
+            <span class="admin-nav-text">{{ 'admin.sidebar.orders'|trans }}</span>
+        </a>
+
+        <a href="{{ path('app_admin_users') }}" class="admin-nav-item {{ app.request.attributes.get('_route') starts with 'app_admin_users' ? 'active' : '' }}">
+            <span class="admin-nav-icon">👥</span>
+            <span class="admin-nav-text">{{ 'admin.sidebar.users'|trans }}</span>
+        </a>
+    </nav>
+
+    <div class="admin-sidebar-footer">
+        <a href="{{ path('app_home') }}" class="admin-back-link">
+            <span class="admin-nav-icon">←</span>
+            <span class="admin-nav-text">{{ 'admin.sidebar.back_to_site'|trans }}</span>
+        </a>
+    </div>
+</aside>

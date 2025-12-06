@@ -1,0 +1,42 @@
+# Validation messages
+email:
+  invalid: "The email address '{{ value }}' is not valid."
+  required: "Email address is required."
+  exists: "This email address is already in use."
+
+password:
+  too_short: "Password must contain at least {{ limit }} characters."
+  required: "Password is required."
+  mismatch: "Passwords do not match."
+
+firstname:
+  required: "First name is required."
+  too_short: "First name must contain at least {{ limit }} characters."
+
+lastname:
+  required: "Last name is required."
+  too_short: "Last name must contain at least {{ limit }} characters."
+
+product:
+  name:
+    required: "Product name is required."
+  price:
+    required: "Price is required."
+    positive: "Price must be positive."
+  stock:
+    required: "Stock is required."
+    positive_or_zero: "Stock must be positive or zero."
+
+category:
+  name:
+    required: "Category name is required."
+
+profile:
+  card:
+    validation:
+      number_required: "Card number is required"
+      number_invalid: "Card number is not valid (13-19 digits)"
+      expiration_date_required: "Expiration date is required"
+      expiration_date_invalid: "Expiration date is not valid (format: MM/YY or MM/YYYY)"
+      cvv_required: "CVV is required"
+      cvv_invalid: "CVV is not valid (3-4 digits)"

@@ -1,0 +1,70 @@
+{% extends 'layouts/main_layout.html.twig' %}
+
+{% block title %}
+    {% if isEdit %}
+        {{ 'profile.address.edit_title'|trans }}
+    {% else %}
+        {{ 'profile.address.new_title'|trans }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="container">
+        <div class="form-page">
+            <h1>
+                {% if isEdit %}
+                    {{ 'profile.address.edit_title'|trans }}
+                {% else %}
+                    {{ 'profile.address.new_title'|trans }}
+                {% endif %}
+            </h1>
+
+            <div class="form-container">
+                {{ form_start(form, {'attr': {'class': 'profile-form'}}) }}
+
+                    <div class="form-group">
+                        {{ form_label(form.street, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.street, {'attr': {'class': 'form-input'}}) }}
+                        {{ form_errors(form.street) }}
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group form-group-half">
+                            {{ form_label(form.postalCode, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.postalCode, {'attr': {'class': 'form-input'}}) }}
+                            {{ form_errors(form.postalCode) }}
+                        </div>
+
+                        <div class="form-group form-group-half">
+                            {{ form_label(form.city, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.city, {'attr': {'class': 'form-input'}}) }}
+                            {{ form_errors(form.city) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.country, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.country, {'attr': {'class': 'form-input'}}) }}
+                        {{ form_errors(form.country) }}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            {% if isEdit %}
+                                {{ 'profile.actions.update'|trans }}
+                            {% else %}
+                                {{ 'profile.actions.save'|trans }}
+                            {% endif %}
+                        </button>
+                        <a href="{{ path('app_profile') }}" class="btn btn-secondary">
+                            {{ 'profile.actions.cancel'|trans }}
+                        </a>
+                    </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

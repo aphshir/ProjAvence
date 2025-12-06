@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'checkout.title'|trans }}{% endblock %}
+
+{% block body %}
+<div class="checkout-page">
+    <div class="container">
+        <h1>{{ 'checkout.title'|trans }}</h1>
+
+        <div class="checkout-content">
+            <div class="checkout-main">
+                <div class="checkout-section">
+                    <h2>{{ 'checkout.delivery_address'|trans }}</h2>
+
+                    {% if addresses is empty %}
+                        <div class="alert alert-info">
+                            <p>{{ 'checkout.no_address'|trans }}</p>
+                            <a href="{{ path('app_profile_address_new', {'redirect': 'checkout'}) }}" class="btn btn-secondary">
+                                {{ 'checkout.add_address'|trans }}
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="address-list">
+                            {% for address in addresses %}
+                                <div class="address-card">
+                                    <input type="radio"
+                                           name="address_id"
+                                           value="{{ address.id }}"
+                                           id="address-{{ address.id }}"
+                                           required
+                                           {% if (selectedAddressId and selectedAddressId == address.id) or (not selectedAddressId and loop.first) %}checked{% endif %}>
+                                    <label for="address-{{ address.id }}">
+                                        <div class="address-details">
+                                            <p><strong>{{ address.street }}</strong></p>
+                                            <p>{{ address.postalCode }} {{ address.city }}</p>
+                                            <p>{{ address.country }}</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a href="{{ path('app_profile_address_new', {'redirect': 'checkout'}) }}" class="btn-link">
+                            {{ 'checkout.add_new_address'|trans }}
+                        </a>
+                    {% endif %}
+                </div>
+
+                <div class="checkout-section">
+                    <h2>{{ 'checkout.payment_method'|trans }}</h2>
+
+                    {% if creditCards is empty %}
+                        <div class="alert alert-info">
+                            <p>{{ 'checkout.no_card'|trans }}</p>
+                        </div>
+                        <div class="checkout-add-card-form">
+                            {{ component('CreditCardForm', { user: app.user, isCheckoutMode: true }) }}
+                        </div>
+                    {% else %}
+                        <div class="card-list">
+                            {% for card in creditCards %}
+                                <div class="card-item">
+                                    <input type="radio"
+                                           name="credit_card_id"
+                                           value="{{ card.id }}"
+                                           id="card-{{ card.id }}"
+                                           required
+                                           {% if loop.first %}checked{% endif %}>
+                                    <label for="card-{{ card.id }}">
+                                        <div class="card-details">
+                                            <div class="card-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                                                </svg>
+                                            </div>
+                                            <div class="card-info">
+                                                <span class="card-number">**** **** **** {{ card.number[-4:] }}</span>
+                                                <span class="card-expiry">{{ 'checkout.expires'|trans }}: {{ card.expirationDate }}</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <details class="checkout-add-card-details">
+                            <summary class="btn-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"/>
+                                    <path d="M12 5v14"/>
+                                </svg>
+                                {{ 'checkout.add_new_card'|trans }}
+                            </summary>
+                            <div class="checkout-add-card-form">
+                                {{ component('CreditCardForm', { user: app.user, isCheckoutMode: true }) }}
+                            </div>
+                        </details>
+                    {% endif %}
+                </div>
+
+                {% if addresses is not empty and creditCards is not empty %}
+                    <form action="{{ path('app_checkout_validate') }}" method="post" class="checkout-form">
+                        <input type="hidden" name="_token" value="{{ csrf_token('checkout_validate') }}">
+                        <input type="hidden" name="address_id" id="selected-address" value="{{ selectedAddressId|default(addresses|first.id) }}">
+                        <input type="hidden" name="credit_card_id" id="selected-card" value="{{ creditCards|first.id }}">
+
+                        <button type="submit" class="btn btn-primary btn-block btn-large">
+                            {{ 'checkout.confirm_order'|trans }}
+                        </button>
+                    </form>
+
+                    <script>
+                        document.querySelectorAll('input[name="address_id"]').forEach(radio => {
+                            radio.addEventListener('change', (e) => {
+                                document.getElementById('selected-address').value = e.target.value;
+                            });
+                        });
+
+                        document.querySelectorAll('input[name="credit_card_id"]').forEach(radio => {
+                            radio.addEventListener('change', (e) => {
+                                document.getElementById('selected-card').value = e.target.value;
+                            });
+                        });
+                    </script>
+                {% endif %}
+            </div>
+
+            <div class="checkout-sidebar">
+                <div class="order-summary">
+                    <h2>{{ 'checkout.order_summary'|trans }}</h2>
+
+                    <div class="summary-items">
+                        {% for item in cart.items %}
+                            <div class="summary-item">
+                                {% set image = item.product.images|first %}
+                                {% if image %}
+                                    <img src="{{ image.url }}" alt="{{ image.altText }}" class="summary-item-image">
+                                {% else %}
+                                    <div class="summary-item-image summary-item-placeholder">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted); opacity: 0.5;">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                            <polyline points="21 15 16 10 5 21"></polyline>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                                <div class="item-info">
+                                    <span class="item-name">{{ item.product.name }}</span>
+                                    <span class="item-quantity">x {{ item.quantity }}</span>
+                                </div>
+                                <span class="item-price">{{ item.subTotal|number_format(2, '.', ' ') }} EUR</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-row">
+                        <span>{{ 'checkout.subtotal'|trans }}</span>
+                        <span>{{ cart.total|number_format(2, '.', ' ') }} EUR</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>{{ 'checkout.shipping'|trans }}</span>
+                        <span>{{ 'checkout.free'|trans }}</span>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-row summary-total">
+                        <span>{{ 'checkout.total'|trans }}</span>
+                        <span>{{ cart.total|number_format(2, '.', ' ') }} EUR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

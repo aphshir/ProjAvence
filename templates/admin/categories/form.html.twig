@@ -1,0 +1,58 @@
+{% extends 'layouts/admin_layout.html.twig' %}
+
+{% block title %}
+    {% if isEdit %}
+        {{ 'admin.categories.edit_category'|trans }} - NightMarket
+    {% else %}
+        {{ 'admin.categories.create_category'|trans }} - NightMarket
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1>
+        {% if isEdit %}
+            {{ 'admin.categories.edit_category'|trans }}
+        {% else %}
+            {{ 'admin.categories.create_category'|trans }}
+        {% endif %}
+    </h1>
+</div>
+
+<div class="form-container">
+    {{ form_start(form, {'attr': {'class': 'admin-form'}}) }}
+
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.parent) }}
+            {{ form_widget(form.parent, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.parent) }}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                {% if isEdit %}
+                    {{ 'admin.categories.actions.update'|trans }}
+                {% else %}
+                    {{ 'admin.categories.actions.create'|trans }}
+                {% endif %}
+            </button>
+            <a href="{{ path('app_admin_categories') }}" class="btn btn-secondary">
+                {{ 'admin.categories.actions.cancel'|trans }}
+            </a>
+        </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

@@ -1,0 +1,345 @@
+.product-form-bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.bento-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.bento-card:hover {
+    border-color: var(--purple-border);
+    box-shadow: var(--shadow-purple);
+}
+
+.bento-card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bento-card-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background: var(--purple-primary);
+    border-radius: 2px;
+}
+
+.section-general {
+    grid-column: span 8;
+}
+
+.section-general .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.section-general textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.section-classification {
+    grid-column: span 4;
+}
+
+.section-pricing {
+    grid-column: span 6;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.section-status {
+    grid-column: span 6;
+}
+
+.section-media {
+    grid-column: span 12;
+}
+
+.media-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.upload-zone-wrapper {
+    border: 2px dashed var(--border-primary);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    background: var(--purple-light);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-zone-wrapper:hover {
+    border-color: var(--purple-primary);
+    background: var(--purple-border);
+}
+
+.upload-zone-wrapper.drag-over {
+    border-color: var(--purple-primary);
+    background: var(--purple-border);
+    transform: scale(1.02);
+}
+
+.upload-zone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.upload-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--purple-primary);
+}
+
+.upload-text-primary {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.upload-text-secondary {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.image-card {
+    position: relative;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.image-card:hover {
+    border-color: var(--purple-border);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-purple);
+}
+
+.image-card.primary {
+    border-color: var(--purple-primary);
+    border-width: 2px;
+}
+
+.image-preview {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-preview-placeholder {
+    color: var(--text-muted);
+    font-size: 3rem;
+}
+
+.image-controls {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.image-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    white-space: nowrap;
+}
+
+.badge-primary {
+    background: var(--purple-primary);
+    color: white;
+}
+
+.badge-position {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    color: var(--text-secondary);
+}
+
+.image-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-primary);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    border-color: var(--purple-border);
+    color: var(--purple-primary);
+    background: var(--purple-light);
+}
+
+.btn-icon.danger:hover {
+    border-color: var(--error-border);
+    color: var(--error-text);
+    background: var(--error-bg);
+}
+
+.drag-handle {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    cursor: grab;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 0.5rem;
+    border-radius: var(--radius);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.image-card:hover .drag-handle {
+    opacity: 1;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.form-actions-sticky {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-primary);
+    padding: 1.25rem 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+@media (max-width: 1200px) {
+    .section-general {
+        grid-column: span 12;
+    }
+
+    .section-classification {
+        grid-column: span 12;
+    }
+
+    .section-pricing {
+        grid-column: span 6;
+    }
+
+    .section-status {
+        grid-column: span 6;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-form-bento {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .section-general,
+    .section-classification,
+    .section-pricing,
+    .section-status,
+    .section-media {
+        grid-column: span 1;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .images-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions-sticky {
+        flex-direction: column;
+    }
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+}
+
+.sortable-drag {
+    cursor: grabbing;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.image-card {
+    animation: slideIn 0.3s ease-out;
+}

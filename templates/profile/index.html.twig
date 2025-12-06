@@ -1,0 +1,148 @@
+{% extends 'layouts/main_layout.html.twig' %}
+
+{% block title %}{{ 'profile.title'|trans }}{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="container">
+        <h1>{{ 'profile.title'|trans }}</h1>
+
+        <div class="profile-content">
+            <section class="profile-section">
+                <div class="section-header">
+                    <h2>{{ 'profile.personal_info.title'|trans }}</h2>
+                </div>
+                <div class="profile-info">
+                    <div class="info-row">
+                        <span class="info-label">{{ 'profile.personal_info.name'|trans }}</span>
+                        <span class="info-value">{{ user.fullName }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">{{ 'profile.personal_info.email'|trans }}</span>
+                        <span class="info-value">{{ user.email }}</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="profile-section">
+                <div class="section-header">
+                    <h2>{{ 'profile.address.title'|trans }}</h2>
+                    <a href="{{ path('app_profile_address_new') }}" class="btn btn-secondary btn-small">
+                        {{ 'profile.address.add'|trans }}
+                    </a>
+                </div>
+
+                {% if addresses is empty %}
+                    <p class="empty-message">{{ 'profile.address.empty'|trans }}</p>
+                {% else %}
+                    <div class="items-list">
+                        {% for address in addresses %}
+                            <div class="item-card">
+                                <div class="item-info">
+                                    <p class="item-primary">{{ address.street }}</p>
+                                    <p class="item-secondary">{{ address.postalCode }} {{ address.city }}</p>
+                                    <p class="item-secondary">{{ address.country }}</p>
+                                </div>
+                                <div class="item-actions">
+                                    <a href="{{ path('app_profile_address_edit', {id: address.id}) }}" class="btn btn-link">
+                                        {{ 'profile.actions.edit'|trans }}
+                                    </a>
+                                    <form action="{{ path('app_profile_address_delete', {id: address.id}) }}" method="post" class="inline-form">
+                                        <button type="submit" class="btn btn-link btn-danger" onclick="return confirm('{{ 'profile.address.confirm_delete'|trans }}')">
+                                            {{ 'profile.actions.delete'|trans }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </section>
+
+            <section class="profile-section">
+                <div class="section-header">
+                    <h2>{{ 'profile.card.title'|trans }}</h2>
+                    <div class="section-actions">
+                        <a href="{{ path('app_profile_cards') }}" class="btn btn-primary btn-small">
+                            {{ 'profile.card.manage'|trans }}
+                        </a>
+                        <a href="{{ path('app_profile_card_new') }}" class="btn btn-secondary btn-small">
+                            {{ 'profile.card.add'|trans }}
+                        </a>
+                    </div>
+                </div>
+
+                {% if creditCards is empty %}
+                    <p class="empty-message">{{ 'profile.card.empty'|trans }}</p>
+                {% else %}
+                    <div class="items-list">
+                        {% for card in creditCards %}
+                            <div class="item-card">
+                                <div class="item-info">
+                                    <div class="card-display">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                                        </svg>
+                                        <div>
+                                            <p class="item-primary">{{ card.maskedNumber }}</p>
+                                            <p class="item-secondary">{{ 'profile.card.expires'|trans }}: {{ card.expirationDate }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-actions">
+                                    <a href="{{ path('app_profile_card_edit', {id: card.id}) }}" class="btn btn-link">
+                                        {{ 'profile.actions.edit'|trans }}
+                                    </a>
+                                    <form action="{{ path('app_profile_card_delete', {id: card.id}) }}" method="post" class="inline-form">
+                                        <button type="submit" class="btn btn-link btn-danger" onclick="return confirm('{{ 'profile.card.confirm_delete'|trans }}')">
+                                            {{ 'profile.actions.delete'|trans }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </section>
+
+            <section class="profile-section" id="orders">
+                <div class="section-header">
+                    <h2>{{ 'profile.orders.title'|trans }}</h2>
+                </div>
+
+                {% if orders is empty %}
+                    <p class="empty-message">{{ 'profile.orders.empty'|trans }}</p>
+                {% else %}
+                    <div class="orders-table-container">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'profile.orders.reference'|trans }}</th>
+                                    <th>{{ 'profile.orders.date'|trans }}</th>
+                                    <th>{{ 'profile.orders.status'|trans }}</th>
+                                    <th>{{ 'profile.orders.total'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                    <tr>
+                                        <td><strong>{{ order.reference }}</strong></td>
+                                        <td>{{ order.createdAt|date('d/m/Y') }}</td>
+                                        <td>
+                                            <span class="badge badge-status badge-status-{{ order.status.value }}">
+                                                {{ order.status.label|trans }}
+                                            </span>
+                                        </td>
+                                        <td>{{ order.total|number_format(2, ',', ' ') }} €</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

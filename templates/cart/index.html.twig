@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'cart.title'|trans }}{% endblock %}
+
+{% block body %}
+<div class="cart-page" data-controller="cart" data-cart-locale-value="{{ app.request.locale }}">
+    <div class="container">
+        <h1>{{ 'cart.title'|trans }}</h1>
+
+        {% if cart.items|length == 0 %}
+            <div class="cart-empty">
+                <p>{{ 'cart.empty_message'|trans }}</p>
+                <a href="{{ path('app_products') }}" class="btn btn-primary">{{ 'cart.continue_shopping'|trans }}</a>
+            </div>
+        {% else %}
+            <div class="cart-content">
+                <div class="cart-items">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'cart.product'|trans }}</th>
+                                <th>{{ 'cart.price'|trans }}</th>
+                                <th>{{ 'cart.quantity'|trans }}</th>
+                                <th>{{ 'cart.subtotal'|trans }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart.items %}
+                                <tr class="cart-item" data-cart-target="item" data-cart-product-id="{{ item.product.id }}">
+                                    <td class="cart-item-product">
+                                        <div class="product-info">
+                                            {% set image = item.product.images|first %}
+                                            {% if image %}
+                                                <img src="{{ image.url }}" alt="{{ image.altText }}" class="product-image">
+                                            {% endif %}
+                                            <div class="product-details">
+                                                <a href="{{ path('app_product_show', {slug: item.product.slug}) }}" class="product-name">
+                                                    {{ item.product.name }}
+                                                </a>
+                                                <p class="product-category">{{ item.product.category.name }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart-item-price" data-label="{{ 'cart.price'|trans }}">
+                                        {{ item.product.price|number_format(2, '.', ',') }} €
+                                    </td>
+                                    <td class="cart-item-quantity">
+                                        <div class="quantity-controls">
+                                            <button type="button"
+                                                    class="quantity-btn quantity-decrease"
+                                                    data-action="click->cart#decreaseQuantity"
+                                                    data-cart-product-id-param="{{ item.product.id }}"
+                                                    data-cart-current-quantity-param="{{ item.quantity }}">
+                                                -
+                                            </button>
+                                            <input type="number"
+                                                   class="quantity-input"
+                                                   value="{{ item.quantity }}"
+                                                   min="0"
+                                                   max="{{ item.product.stock }}"
+                                                   data-action="change->cart#updateQuantity"
+                                                   data-cart-product-id-param="{{ item.product.id }}"
+                                                   data-cart-target="quantityInput">
+                                            <button type="button"
+                                                    class="quantity-btn quantity-increase"
+                                                    data-action="click->cart#increaseQuantity"
+                                                    data-cart-product-id-param="{{ item.product.id }}"
+                                                    data-cart-current-quantity-param="{{ item.quantity }}"
+                                                    data-cart-max-stock-param="{{ item.product.stock }}"
+                                                    {% if item.quantity >= item.product.stock %}disabled{% endif %}>
+                                                +
+                                            </button>
+                                        </div>
+                                        <small class="stock-info">{{ 'cart.stock_available'|trans({'%stock%': item.product.stock}) }}</small>
+                                    </td>
+                                    <td class="cart-item-subtotal" data-cart-target="subtotal" data-label="{{ 'cart.subtotal'|trans }}">
+                                        {{ item.subTotal|number_format(2, '.', ',') }} €
+                                    </td>
+                                    <td class="cart-item-actions">
+                                        <button type="button"
+                                                class="btn-remove"
+                                                data-action="click->cart#removeItem"
+                                                data-cart-product-id-param="{{ item.product.id }}"
+                                                title="{{ 'cart.remove'|trans }}">
+                                            ×
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="cart-summary">
+                    <div class="summary-card">
+                        <h2>{{ 'cart.summary'|trans }}</h2>
+
+                        <div class="summary-row">
+                            <span>{{ 'cart.items_count'|trans }}</span>
+                            <span data-cart-target="itemCount">{{ cart.itemCount }}</span>
+                        </div>
+
+                        <div class="summary-row summary-total">
+                            <span>{{ 'cart.total'|trans }}</span>
+                            <span data-cart-target="total">{{ cart.total|number_format(2, '.', ',') }} €</span>
+                        </div>
+
+                        <div class="summary-actions">
+                            <a href="{{ path('app_checkout') }}" class="btn btn-primary btn-block">
+                                {{ 'cart.checkout'|trans }}
+                            </a>
+
+                            <form action="{{ path('app_cart_clear') }}" method="post" onsubmit="return confirm('{{ 'cart.clear_confirm'|trans }}');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('cart_clear') }}">
+                                <button type="submit" class="btn btn-secondary btn-block">
+                                    {{ 'cart.clear'|trans }}
+                                </button>
+                            </form>
+
+                            <a href="{{ path('app_products') }}" class="btn btn-link">
+                                {{ 'cart.continue_shopping'|trans }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

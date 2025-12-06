@@ -1,0 +1,31 @@
+.hero {
+    background: var(--bg-primary);
+    min-height: calc(100vh - 73px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+}
+
+.hero-content {
+    max-width: 800px;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.highlight {
+    color: var(--purple-primary);
+}
+
+.hero-subtitle {
+    font-size: 20px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}

@@ -1,0 +1,134 @@
+.form-container {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-top: 2rem;
+    max-width: 800px;
+}
+
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group .required::after {
+    content: " *";
+    color: var(--purple-primary);
+}
+
+.form-control {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 0 3px var(--purple-light);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+select.form-control {
+    cursor: pointer;
+}
+
+.form-error,
+.invalid-feedback {
+    color: var(--error-text);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.form-control.is-invalid {
+    border-color: var(--error-border);
+}
+
+.form-control.is-invalid:focus {
+    box-shadow: 0 0 0 3px var(--error-bg);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-primary);
+}
+
+.form-help {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-check-input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--purple-primary);
+}
+
+.form-check-label {
+    color: var(--text-primary);
+    cursor: pointer;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: 1.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+}

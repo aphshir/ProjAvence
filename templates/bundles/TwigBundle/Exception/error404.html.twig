@@ -1,0 +1,14 @@
+{% extends 'layouts/main_layout.html.twig' %}
+
+{% block title %}{{ 'error.404.title'|trans }}{% endblock %}
+
+{% block content %}
+<main class="error-page">
+    <div class="error-content">
+        <span class="error-code">404</span>
+        <h1 class="error-heading">{{ 'error.404.heading'|trans }}</h1>
+        <p class="error-message">{{ 'error.404.message'|trans }}</p>
+        <a href="{{ path('app_home') }}" class="btn">{{ 'error.404.back_home'|trans }}</a>
+    </div>
+</main>
+{% endblock %}

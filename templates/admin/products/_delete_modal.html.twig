@@ -1,0 +1,59 @@
+<div id="deleteModal" class="modal" style="display: none;">
+    <div class="modal-overlay" data-action="close-modal"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>{{ 'admin.products.actions.delete'|trans }}</h3>
+            <button type="button" class="modal-close" data-action="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="deleteMessage">{{ 'admin.products.actions.confirm_delete'|trans }}</p>
+            <p id="productName" class="product-name-display"></p>
+        </div>
+        <div class="modal-footer">
+            <form id="deleteForm" method="post" style="display: inline;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete-product') }}">
+                <button type="submit" class="btn btn-danger">
+                    {{ 'admin.products.actions.delete'|trans }}
+                </button>
+            </form>
+            <button type="button" class="btn btn-secondary" data-action="close-modal">
+                {{ 'admin.products.actions.cancel'|trans }}
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('turbo:load', function() {
+    const modal = document.getElementById('deleteModal');
+    const deleteForm = document.getElementById('deleteForm');
+    const productNameDisplay = document.getElementById('productName');
+
+    // Open modal when delete button is clicked
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('[data-action="delete-product"]')) {
+            e.preventDefault();
+            const productId = e.target.dataset.productId;
+            const productName = e.target.dataset.productName;
+
+            deleteForm.action = '{{ path('app_admin_product_delete', {id: '__ID__'}) }}'.replace('__ID__', productId);
+            productNameDisplay.textContent = productName;
+            modal.style.display = 'flex';
+        }
+    });
+
+    // Close modal
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('[data-action="close-modal"]') || e.target.classList.contains('modal-overlay')) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>

@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'checkout.confirmation_title'|trans }}{% endblock %}
+
+{% block body %}
+<div class="confirmation-page">
+    <div class="container">
+        <div class="confirmation-content">
+            <h1>{{ 'checkout.order_confirmed'|trans }}</h1>
+            <p class="confirmation-message">{{ 'checkout.confirmation_message'|trans }}</p>
+
+            <div class="order-info">
+                <div class="info-row">
+                    <span class="label">{{ 'checkout.order_reference'|trans }}</span>
+                    <span class="value"><strong>{{ order.reference }}</strong></span>
+                </div>
+                <div class="info-row">
+                    <span class="label">{{ 'checkout.order_date'|trans }}</span>
+                    <span class="value">{{ order.createdAt|date('d/m/Y H:i') }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">{{ 'checkout.order_total'|trans }}</span>
+                    <span class="value"><strong>{{ order.total|number_format(2, '.', ' ') }} EUR</strong></span>
+                </div>
+            </div>
+
+            <div class="order-items">
+                <h2>{{ 'checkout.ordered_items'|trans }}</h2>
+
+                <div class="items-list">
+                    {% for item in order.orderItems %}
+                        <div class="order-item">
+                            {% set image = item.product.images|first %}
+                            {% if image %}
+                                <img src="{{ image.url }}" alt="{{ image.altText }}" class="order-item-image">
+                            {% endif %}
+                            <div class="item-details">
+                                <p class="item-name">{{ item.product.name }}</p>
+                                <p class="item-quantity">{{ 'checkout.quantity'|trans }}: {{ item.quantity }}</p>
+                            </div>
+                            <div class="item-price">
+                                {{ item.subTotal|number_format(2, '.', ' ') }} EUR
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="confirmation-actions">
+                <a href="{{ path('app_products') }}" class="btn btn-primary">
+                    {{ 'checkout.continue_shopping'|trans }}
+                </a>
+                <a href="{{ path('app_profile') }}#orders" class="btn btn-secondary">
+                    {{ 'checkout.view_orders'|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

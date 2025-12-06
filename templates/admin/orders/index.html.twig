@@ -1,0 +1,67 @@
+{% extends 'layouts/admin_layout.html.twig' %}
+
+{% block title %}{{ 'admin.orders.title'|trans }} - NightMarket{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-header-content">
+        <div>
+            <h1>{{ 'admin.orders.title'|trans }}</h1>
+            <p class="admin-subtitle">{{ 'admin.orders.subtitle'|trans }}</p>
+        </div>
+    </div>
+</div>
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-error">{{ message }}</div>
+{% endfor %}
+
+{% if orders is empty %}
+    <div class="empty-state">
+        <p>{{ 'admin.orders.no_orders'|trans }}</p>
+    </div>
+{% else %}
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'admin.orders.table.reference'|trans }}</th>
+                    <th>{{ 'admin.orders.table.customer'|trans }}</th>
+                    <th>{{ 'admin.orders.table.date'|trans }}</th>
+                    <th>{{ 'admin.orders.table.total'|trans }}</th>
+                    <th>{{ 'admin.orders.table.status'|trans }}</th>
+                    <th>{{ 'admin.orders.table.actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>
+                            <strong>{{ order.reference }}</strong>
+                        </td>
+                        <td>{{ order.user.fullName }}</td>
+                        <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>{{ order.total|number_format(2, ',', ' ') }} €</td>
+                        <td>
+                            <span class="badge badge-status badge-status-{{ order.status.value }}">
+                                {{ order.status.label|trans }}
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <a href="{{ path('app_admin_order_show', {id: order.id}) }}" class="btn btn-sm btn-secondary" title="{{ 'admin.orders.view_order'|trans }}">
+                                {{ 'admin.orders.view_order'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {{ include('admin/_pagination.html.twig') }}
+{% endif %}
+{% endblock %}

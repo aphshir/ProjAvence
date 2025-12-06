@@ -1,0 +1,87 @@
+{% extends 'layouts/admin_layout.html.twig' %}
+
+{% block title %}{{ 'admin.users.title'|trans }} - NightMarket{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-header-content">
+        <div>
+            <h1>{{ 'admin.users.title'|trans }}</h1>
+            <p class="admin-subtitle">{{ 'admin.users.subtitle'|trans }}</p>
+        </div>
+        <a href="{{ path('app_admin_user_new') }}" class="btn btn-primary">
+            {{ 'admin.users.add_user'|trans }}
+        </a>
+    </div>
+</div>
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-error">{{ message }}</div>
+{% endfor %}
+
+{% if usersData is empty %}
+    <div class="empty-state">
+        <p>{{ 'admin.users.no_users'|trans }}</p>
+        <a href="{{ path('app_admin_user_new') }}" class="btn btn-primary">
+            {{ 'admin.users.add_user'|trans }}
+        </a>
+    </div>
+{% else %}
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'admin.users.table.email'|trans }}</th>
+                    <th>{{ 'admin.users.table.full_name'|trans }}</th>
+                    <th>{{ 'admin.users.table.roles'|trans }}</th>
+                    <th>{{ 'admin.users.table.orders_count'|trans }}</th>
+                    <th>{{ 'admin.users.table.actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in usersData %}
+                    {% set user = data.user %}
+                    <tr>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.fullName }}</td>
+                        <td>
+                            {% if 'ROLE_ADMIN' in user.roles %}
+                                <span class="badge badge-admin">{{ 'admin.users.role_admin'|trans }}</span>
+                            {% endif %}
+                            {% if 'ROLE_USER' in user.roles %}
+                                <span class="badge">{{ 'admin.users.role_user'|trans }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <span class="badge">{{ data.ordersCount }}</span>
+                        </td>
+                        <td class="actions">
+                            <a href="{{ path('app_admin_user_edit', {id: user.id}) }}" class="btn btn-sm btn-secondary" title="{{ 'common.edit'|trans }}">
+                                {{ 'common.edit'|trans }}
+                            </a>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-danger"
+                                data-action="delete-user"
+                                data-user-id="{{ user.id }}"
+                                data-user-email="{{ user.email }}"
+                                title="{{ 'common.delete'|trans }}"
+                            >
+                                {{ 'common.delete'|trans }}
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {{ include('admin/_pagination.html.twig') }}
+{% endif %}
+
+{{ include('admin/users/_delete_modal.html.twig') }}
+{% endblock %}

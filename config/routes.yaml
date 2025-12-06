@@ -1,0 +1,14 @@
+# Root redirect (without locale prefix)
+root_redirect:
+    path: /
+    controller: App\Controller\HomeController::root
+
+# All other routes with locale prefix
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+    prefix: /{_locale}
+    requirements:
+        _locale: fr|en
+    defaults:
+        _locale: fr

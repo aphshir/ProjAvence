@@ -1,0 +1,72 @@
+{% extends 'layouts/admin_layout.html.twig' %}
+
+{% block title %}
+    {% if isEdit %}
+        {{ 'admin.users.edit_user'|trans }} - NightMarket
+    {% else %}
+        {{ 'admin.users.create_user'|trans }} - NightMarket
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1>
+        {% if isEdit %}
+            {{ 'admin.users.edit_user'|trans }}
+        {% else %}
+            {{ 'admin.users.create_user'|trans }}
+        {% endif %}
+    </h1>
+</div>
+
+<div class="form-container">
+    {{ form_start(form, {'attr': {'class': 'admin-form'}}) }}
+
+        <div class="form-group">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.firstName) }}
+            {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.firstName) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.lastName) }}
+            {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.lastName) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.roles) }}
+            {{ form_widget(form.roles, {'attr': {'class': 'form-control-roles'}}) }}
+            {{ form_errors(form.roles) }}
+        </div>
+
+        {% if not isEdit %}
+            <div class="form-group">
+                {{ form_label(form.password) }}
+                {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.password) }}
+            </div>
+        {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                {% if isEdit %}
+                    {{ 'admin.users.actions.update'|trans }}
+                {% else %}
+                    {{ 'admin.users.actions.create'|trans }}
+                {% endif %}
+            </button>
+            <a href="{{ path('app_admin_users') }}" class="btn btn-secondary">
+                {{ 'admin.users.actions.cancel'|trans }}
+            </a>
+        </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

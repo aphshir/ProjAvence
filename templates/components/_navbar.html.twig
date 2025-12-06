@@ -1,0 +1,77 @@
+<nav class="navbar">
+    <div class="container-navbar">
+        <div class="navbar-brand">
+            <a href="{{ path('app_home') }}" class="logo">NightMarket</a>
+            <a href="{{ path('app_products') }}" class="nav-link">{{ 'nav.products'|trans }}</a>
+        </div>
+
+        <div class="navbar-actions" data-controller="cart" data-cart-locale-value="{{ app.request.locale }}">
+            <div class="language-switcher">
+                <a href="{{ path('app_home', {_locale: 'fr'}) }}" class="lang-link {{ app.request.locale == 'fr' ? 'active' : '' }}">FR</a>
+                <span class="lang-separator">|</span>
+                <a href="{{ path('app_home', {_locale: 'en'}) }}" class="lang-link {{ app.request.locale == 'en' ? 'active' : '' }}">EN</a>
+            </div>
+
+            <a href="{{ path('app_cart') }}" class="cart-link" title="{{ 'nav.cart'|trans }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span class="cart-badge" data-cart-target="badge" data-cart-count-value="0">0</span>
+            </a>
+
+            {% if app.user %}
+                <div class="user-menu" data-controller="dropdown">
+                    <button type="button" class="user-menu-trigger" data-action="click->dropdown#toggle">
+                        <div class="user-menu-info">
+                            <span class="user-menu-name">{{ app.user.fullName }}</span>
+                            <span class="user-menu-role">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    {{ 'nav.role_admin'|trans }}
+                                {% else %}
+                                    {{ 'nav.role_user'|trans }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <svg class="user-menu-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="user-dropdown" data-dropdown-target="menu">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_admin_dashboard') }}" class="user-dropdown-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                                {{ 'nav.dashboard_admin'|trans }}
+                            </a>
+                        {% endif %}
+                        <a href="{{ path('app_profile') }}" class="user-dropdown-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            {{ 'nav.profile'|trans }}
+                        </a>
+                        <div class="user-dropdown-divider"></div>
+                        <a href="{{ path('app_logout') }}" class="user-dropdown-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            {{ 'nav.logout'|trans }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn-secondary">{{ 'nav.login'|trans }}</a>
+                <a href="{{ path('app_register') }}" class="btn-primary">{{ 'nav.register'|trans }}</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

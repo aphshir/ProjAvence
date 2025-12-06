@@ -1,0 +1,50 @@
+.error-page {
+    min-height: calc(100vh - 73px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl);
+}
+
+.error-content {
+    text-align: center;
+    max-width: 500px;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    color: var(--purple-primary);
+    line-height: 1;
+    display: block;
+    margin-bottom: var(--spacing-md);
+    text-shadow: 0 0 60px rgba(139, 92, 246, 0.4);
+}
+
+.error-heading {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.error-message {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 5rem;
+    }
+
+    .error-heading {
+        font-size: 1.5rem;
+    }
+
+    .error-message {
+        font-size: 1rem;
+    }
+}

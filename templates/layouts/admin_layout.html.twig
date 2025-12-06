@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="admin-container">
+    {{ include('components/_admin_sidebar.html.twig') }}
+
+    <main class="admin-content">
+        {% block content %}{% endblock %}
+    </main>
+</div>
+{% endblock %}

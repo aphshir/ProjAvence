@@ -1,0 +1,187 @@
+{% extends 'layouts/admin_layout.html.twig' %}
+
+{% block title %}{{ 'admin.dashboard.title'|trans }} - NightMarket{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1>{{ 'admin.dashboard.title'|trans }}</h1>
+    <p class="admin-subtitle">{{ 'admin.dashboard.welcome'|trans }}</p>
+</div>
+
+<div class="admin-stats">
+    <div class="stat-card">
+        <h3>{{ 'admin.dashboard.users'|trans }}</h3>
+        <p class="stat-number">{{ totalUsers }}</p>
+        <p class="stat-label">{{ 'admin.dashboard.total_users'|trans }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>{{ 'admin.dashboard.products'|trans }}</h3>
+        <p class="stat-number">{{ totalProducts }}</p>
+        <p class="stat-label">{{ 'admin.dashboard.total_products'|trans }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>{{ 'admin.dashboard.orders'|trans }}</h3>
+        <p class="stat-number">{{ totalOrders }}</p>
+        <p class="stat-label">{{ 'admin.dashboard.total_orders'|trans }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>{{ 'admin.dashboard.categories'|trans }}</h3>
+        <p class="stat-number">{{ totalCategories }}</p>
+        <p class="stat-label">{{ 'admin.dashboard.total_categories'|trans }}</p>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="dashboard-column">
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3>{{ 'admin.dashboard.products_by_category'|trans }}</h3>
+            </div>
+            <div class="dashboard-card-body">
+                {% if categoriesWithCounts is empty %}
+                    <p class="text-muted">{{ 'admin.dashboard.no_categories_data'|trans }}</p>
+                {% else %}
+                    <div class="category-stats-list">
+                        {% for item in categoriesWithCounts %}
+                            <div class="category-stat-item">
+                                <span class="category-name">
+                                    {% if item.category.parent %}
+                                        <span class="category-indent">└─</span>
+                                    {% endif %}
+                                    {{ item.category.name }}
+                                </span>
+                                <span class="category-count badge">{{ item.productCount }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3>{{ 'admin.dashboard.product_status_ratio'|trans }}</h3>
+            </div>
+            <div class="dashboard-card-body">
+                {% if productStatusRatio is empty %}
+                    <p class="text-muted">{{ 'admin.dashboard.no_products_data'|trans }}</p>
+                {% else %}
+                    <div class="status-ratio-list">
+                        {% for item in productStatusRatio %}
+                            <div class="status-ratio-item">
+                                <div class="status-info">
+                                    <span class="status-label status-{{ item.status.value }}">
+                                        {{ item.status.label|trans }}
+                                    </span>
+                                    <span class="status-count">{{ item.count }} ({{ item.percentage }}%)</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill status-{{ item.status.value }}"
+                                         style="width: {{ item.percentage }}%"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-column">
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3>{{ 'admin.dashboard.latest_orders'|trans }}</h3>
+            </div>
+            <div class="dashboard-card-body">
+                {% if latestOrders is empty %}
+                    <p class="text-muted">{{ 'admin.dashboard.no_orders_data'|trans }}</p>
+                {% else %}
+                    <div class="orders-table-container">
+                        <table class="orders-mini-table">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.dashboard.order_reference'|trans }}</th>
+                                    <th>{{ 'admin.dashboard.order_customer'|trans }}</th>
+                                    <th>{{ 'admin.dashboard.order_date'|trans }}</th>
+                                    <th>{{ 'admin.dashboard.order_total'|trans }}</th>
+                                    <th>{{ 'admin.dashboard.order_status'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in latestOrders %}
+                                    <tr>
+                                        <td class="order-ref">{{ order.reference }}</td>
+                                        <td>{{ order.user.firstName }} {{ order.user.lastName }}</td>
+                                        <td>{{ order.createdAt|date('d/m/Y') }}</td>
+                                        <td class="order-total">{{ order.total|number_format(2, ',', ' ') }} EUR</td>
+                                        <td>
+                                            <span class="order-status status-{{ order.status.value }}">
+                                                {{ order.status.label|trans }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3>{{ 'admin.dashboard.monthly_sales'|trans }}</h3>
+                <span class="card-subtitle">{{ 'admin.dashboard.delivered_orders_only'|trans }}</span>
+            </div>
+            <div class="dashboard-card-body">
+                {% if monthlySales is empty %}
+                    <p class="text-muted">{{ 'admin.dashboard.no_sales_data'|trans }}</p>
+                {% else %}
+                    <div class="monthly-sales-chart">
+                        {% set maxSales = 0 %}
+                        {% for sale in monthlySales %}
+                            {% if sale.total > maxSales %}
+                                {% set maxSales = sale.total %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="chart-bars">
+                            {% for sale in monthlySales %}
+                                {% set barHeight = maxSales > 0 ? (sale.total / maxSales * 100) : 0 %}
+                                <div class="chart-bar-container">
+                                    <div class="chart-bar" style="height: {{ barHeight }}%">
+                                        <span class="bar-value">{{ sale.total|number_format(0, ',', ' ') }}</span>
+                                    </div>
+                                    <span class="bar-label">{{ ('admin.dashboard.month_' ~ sale.month)|trans }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="monthly-sales-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>{{ 'admin.dashboard.month'|trans }}</th>
+                                    <th>{{ 'admin.dashboard.sales_total'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sale in monthlySales|reverse %}
+                                    <tr>
+                                        <td>{{ ('admin.dashboard.month_' ~ sale.month)|trans }} {{ sale.year }}</td>
+                                        <td class="sales-amount">{{ sale.total|number_format(2, ',', ' ') }} EUR</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

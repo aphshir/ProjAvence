@@ -1,0 +1,58 @@
+{% if pagination.totalItemCount > pagination.itemNumberPerPage %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        {{ 'pagination.showing'|trans({'%start%': ((pagination.currentPageNumber - 1) * pagination.itemNumberPerPage) + 1, '%end%': min(pagination.currentPageNumber * pagination.itemNumberPerPage, pagination.totalItemCount), '%total%': pagination.totalItemCount}) }}
+    </div>
+    <nav class="pagination">
+        {% if pagination.currentPageNumber > 1 %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: 1})) }}" class="pagination-link pagination-first" title="{{ 'pagination.first'|trans }}">
+                &laquo;
+            </a>
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: pagination.currentPageNumber - 1})) }}" class="pagination-link pagination-prev" title="{{ 'pagination.previous'|trans }}">
+                &lsaquo;
+            </a>
+        {% else %}
+            <span class="pagination-link pagination-first disabled">&laquo;</span>
+            <span class="pagination-link pagination-prev disabled">&lsaquo;</span>
+        {% endif %}
+
+        {% set pageCount = (pagination.totalItemCount / pagination.itemNumberPerPage)|round(0, 'ceil') %}
+        {% set startPage = max(1, pagination.currentPageNumber - 2) %}
+        {% set endPage = min(pageCount, pagination.currentPageNumber + 2) %}
+
+        {% if startPage > 1 %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: 1})) }}" class="pagination-link">1</a>
+            {% if startPage > 2 %}
+                <span class="pagination-ellipsis">...</span>
+            {% endif %}
+        {% endif %}
+
+        {% for page in startPage..endPage %}
+            {% if page == pagination.currentPageNumber %}
+                <span class="pagination-link active">{{ page }}</span>
+            {% else %}
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: page})) }}" class="pagination-link">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if endPage < pageCount %}
+            {% if endPage < pageCount - 1 %}
+                <span class="pagination-ellipsis">...</span>
+            {% endif %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: pageCount})) }}" class="pagination-link">{{ pageCount }}</a>
+        {% endif %}
+
+        {% if pagination.currentPageNumber < pageCount %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: pagination.currentPageNumber + 1})) }}" class="pagination-link pagination-next" title="{{ 'pagination.next'|trans }}">
+                &rsaquo;
+            </a>
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({page: pageCount})) }}" class="pagination-link pagination-last" title="{{ 'pagination.last'|trans }}">
+                &raquo;
+            </a>
+        {% else %}
+            <span class="pagination-link pagination-next disabled">&rsaquo;</span>
+            <span class="pagination-link pagination-last disabled">&raquo;</span>
+        {% endif %}
+    </nav>
+</div>
+{% endif %}

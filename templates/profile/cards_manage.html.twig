@@ -1,0 +1,17 @@
+{% extends 'layouts/main_layout.html.twig' %}
+
+{% block title %}{{ 'profile.card.manage_title'|trans }}{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="container">
+        <div class="form-page">
+            <h1>{{ 'profile.card.manage_title'|trans }}</h1>
+
+            <div class="form-container">
+                {{ component('CreditCardForm', { user: user, isCheckoutMode: false }) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

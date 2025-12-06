@@ -1,0 +1,99 @@
+{% extends 'layouts/admin_layout.html.twig' %}
+
+{% block title %}{{ 'admin.categories.title'|trans }} - NightMarket{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-header-content">
+        <div>
+            <h1>{{ 'admin.categories.title'|trans }}</h1>
+            <p class="admin-subtitle">{{ 'admin.categories.subtitle'|trans }}</p>
+        </div>
+        <a href="{{ path('app_admin_category_new') }}" class="btn btn-primary">
+            {{ 'admin.categories.add_category'|trans }}
+        </a>
+    </div>
+</div>
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-error">{{ message }}</div>
+{% endfor %}
+
+{% if categoriesData is empty %}
+    <div class="empty-state">
+        <p>{{ 'admin.categories.no_categories'|trans }}</p>
+        <a href="{{ path('app_admin_category_new') }}" class="btn btn-primary">
+            {{ 'admin.categories.add_category'|trans }}
+        </a>
+    </div>
+{% else %}
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'admin.categories.table.name'|trans }}</th>
+                    <th>{{ 'admin.categories.table.description'|trans }}</th>
+                    <th>{{ 'admin.categories.table.parent'|trans }}</th>
+                    <th>{{ 'admin.categories.table.products_count'|trans }}</th>
+                    <th>{{ 'admin.categories.table.children_count'|trans }}</th>
+                    <th>{{ 'admin.categories.table.actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in categoriesData %}
+                    {% set category = data.category %}
+                    <tr>
+                        <td class="category-name">
+                            {% if category.parent %}
+                                <span class="category-indent">└─</span>
+                            {% endif %}
+                            {{ category.name }}
+                        </td>
+                        <td class="category-description">
+                            {% if category.description %}
+                                {{ category.description|length > 80 ? category.description|slice(0, 80) ~ '...' : category.description }}
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if category.parent %}
+                                {{ category.parent.name }}
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <span class="badge">{{ data.productsCount }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge">{{ data.childrenCount }}</span>
+                        </td>
+                        <td class="actions">
+                            <a href="{{ path('app_admin_category_edit', {id: category.id}) }}" class="btn btn-sm btn-secondary" title="{{ 'common.edit'|trans }}">
+                                {{ 'common.edit'|trans }}
+                            </a>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-danger"
+                                data-action="delete-category"
+                                data-category-id="{{ category.id }}"
+                                data-category-name="{{ category.name }}"
+                                title="{{ 'common.delete'|trans }}"
+                            >
+                                {{ 'common.delete'|trans }}
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
+{{ include('admin/categories/_delete_modal.html.twig') }}
+{% endblock %}

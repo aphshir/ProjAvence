@@ -1,0 +1,94 @@
+{% extends 'layouts/admin_layout.html.twig' %}
+
+{% block title %}{{ 'admin.orders.detail.title'|trans }} - {{ order.reference }} - NightMarket{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-header-content">
+        <div>
+            <h1>{{ order.reference }}</h1>
+            <p class="admin-subtitle">
+                {{ 'admin.orders.table.date'|trans }}: {{ order.createdAt|date('d/m/Y H:i') }}
+                <span class="badge badge-status badge-status-{{ order.status.value }}">
+                    {{ order.status.label|trans }}
+                </span>
+            </p>
+        </div>
+        <a href="{{ path('app_admin_orders') }}" class="btn btn-secondary">
+            {{ 'common.back'|trans }}
+        </a>
+    </div>
+</div>
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-error">{{ message }}</div>
+{% endfor %}
+
+<div class="order-detail-grid">
+    <div class="order-detail-section">
+        <h2>{{ 'admin.orders.detail.customer_info'|trans }}</h2>
+        <div class="order-info-card">
+            <p><strong>{{ order.user.fullName }}</strong></p>
+            <p>{{ order.user.email }}</p>
+        </div>
+    </div>
+
+    <div class="order-detail-section">
+        <h2>{{ 'admin.orders.detail.change_status'|trans }}</h2>
+        <div class="order-info-card">
+            {{ form_start(form, {'attr': {'class': 'status-form'}}) }}
+                <div class="status-form-row">
+                    {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+                    <button type="submit" class="btn btn-primary">
+                        {{ 'common.save'|trans }}
+                    </button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+<div class="order-detail-section order-items-section">
+    <h2>{{ 'admin.orders.detail.items'|trans }}</h2>
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'admin.orders.detail.product'|trans }}</th>
+                    <th class="text-center">{{ 'admin.orders.detail.quantity'|trans }}</th>
+                    <th class="text-right">{{ 'admin.orders.detail.unit_price'|trans }}</th>
+                    <th class="text-right">{{ 'admin.orders.detail.subtotal'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.orderItems %}
+                    <tr>
+                        <td>
+                            <div class="order-item-product">
+                                {% if item.product.images|length > 0 %}
+                                    {% set image = item.product.images|first %}
+                                    <img src="{{ image.url }}" alt="{{ image.altText }}" class="order-item-image">
+                                {% endif %}
+                                <span>{{ item.product.name }}</span>
+                            </div>
+                        </td>
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td class="text-right">{{ item.productPrice|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ item.subTotal|number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr class="order-total-row">
+                    <td colspan="3" class="text-right"><strong>{{ 'admin.orders.detail.order_total'|trans }}</strong></td>
+                    <td class="text-right"><strong>{{ order.total|number_format(2, ',', ' ') }} €</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+{% endblock %}

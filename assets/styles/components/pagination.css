@@ -1,0 +1,101 @@
+.pagination-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg) 0;
+}
+
+.pagination-info {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 var(--spacing-sm);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-link:hover:not(.disabled):not(.active) {
+    background-color: var(--purple-light);
+    border-color: var(--purple-border);
+    color: var(--purple-primary);
+}
+
+.pagination-link.active {
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+    color: white;
+    cursor: default;
+}
+
+.pagination-link.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pagination-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.pagination-first,
+.pagination-last {
+    font-weight: bold;
+}
+
+.pagination-prev,
+.pagination-next {
+    font-size: 1.125rem;
+}
+
+.admin-table-container + .pagination-container {
+    border-top: 1px solid var(--border-primary);
+    padding-top: var(--spacing-lg);
+}
+
+@media (max-width: 640px) {
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pagination-link {
+        min-width: 36px;
+        height: 36px;
+        font-size: 0.8125rem;
+    }
+
+    .pagination-ellipsis {
+        min-width: 30px;
+    }
+
+    .pagination-info {
+        text-align: center;
+    }
+}

@@ -1,0 +1,319 @@
+.credit-card-form-component {
+    width: 100%;
+}
+
+.credit-card-collection-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.credit-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.credit-card-item {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+    animation: cardSlideIn 0.3s ease;
+}
+
+.credit-card-item:hover {
+    border-color: var(--purple-border);
+}
+
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.card-number-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-number-label svg {
+    color: var(--purple-primary);
+}
+
+.btn-remove-card {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-remove-card:hover {
+    color: var(--error-text);
+    background: var(--error-bg);
+    border-color: var(--error-border);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper .form-input {
+    padding-right: 2.5rem;
+}
+
+.form-input.is-valid {
+    border-color: var(--success-border);
+}
+
+.form-input.is-valid:focus {
+    box-shadow: 0 0 0 3px var(--success-bg);
+}
+
+.form-input.is-invalid {
+    border-color: var(--error-border);
+}
+
+.form-input.is-invalid:focus {
+    box-shadow: 0 0 0 3px var(--error-bg);
+}
+
+.validation-icon {
+    position: absolute;
+    right: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.validation-icon.valid,
+.validation-icon.invalid {
+    opacity: 1;
+}
+
+.validation-icon.valid {
+    color: var(--success-text);
+}
+
+.validation-icon.invalid {
+    color: var(--error-text);
+}
+
+.form-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.375rem 0 0 0;
+}
+
+.form-group ul li {
+    color: var(--error-text);
+    font-size: 0.8125rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.form-group ul li::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: var(--error-text);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.js-validation-error {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--error-text);
+    margin-top: 0.375rem;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.js-validation-error.visible {
+    opacity: 1;
+    max-height: 2rem;
+}
+
+.empty-cards-message {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--bg-primary);
+    border: 2px dashed var(--border-primary);
+    border-radius: var(--radius-lg);
+    color: var(--text-muted);
+}
+
+.empty-cards-message p {
+    margin: 0;
+    font-size: 0.9375rem;
+}
+
+.form-actions-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.btn-add-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.875rem;
+    border: 2px dashed var(--border-primary);
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-add-card:hover {
+    border-color: var(--purple-primary);
+    color: var(--purple-primary);
+    background: var(--purple-light);
+}
+
+.btn-add-card svg {
+    transition: transform 0.2s ease;
+}
+
+.btn-add-card:hover svg {
+    transform: scale(1.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.btn-text,
+.btn-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-loading {
+    display: none;
+}
+
+.btn.loading .btn-text {
+    display: none;
+}
+
+.btn.loading .btn-loading {
+    display: flex;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-circle {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 20;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.alert {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: alertSlideIn 0.3s ease;
+}
+
+.alert-success {
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+    color: var(--success-text);
+}
+
+@keyframes alertSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .credit-card-item {
+        padding: 1.25rem;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .btn-remove-card {
+        align-self: flex-end;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+}

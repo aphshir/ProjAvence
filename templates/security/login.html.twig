@@ -1,0 +1,43 @@
+{% extends 'layouts/main_layout.html.twig' %}
+
+{% block title %}{{ 'auth.login.title'|trans }}{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>{{ 'auth.login.title'|trans }}</h1>
+
+        {% if error %}
+            <div class="alert alert-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-warning">{{ message|trans }}</div>
+        {% endfor %}
+
+        <form method="post" action="{{ path('app_login') }}">
+            <div class="form-group">
+                <label for="username" class="form-label">{{ 'auth.login.email'|trans }}</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-input" autocomplete="email" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">{{ 'auth.login.password'|trans }}</label>
+                <input type="password" name="_password" id="password" class="form-input" autocomplete="current-password" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="btn">{{ 'auth.login.submit'|trans }}</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>{{ 'auth.login.no_account'|trans }} <a href="{{ path('app_register') }}">{{ 'auth.login.register_link'|trans }}</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'layouts/main_layout.html.twig' %}
+
+{% block title %}
+    {% if isEdit %}
+        {{ 'profile.card.edit_title'|trans }}
+    {% else %}
+        {{ 'profile.card.new_title'|trans }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="container">
+        <div class="form-page">
+            <h1>
+                {% if isEdit %}
+                    {{ 'profile.card.edit_title'|trans }}
+                {% else %}
+                    {{ 'profile.card.new_title'|trans }}
+                {% endif %}
+            </h1>
+
+            <div class="form-container">
+                {{ component('SingleCreditCardForm', {
+                    creditCard: creditCard|default(null),
+                    isEdit: isEdit,
+                    redirectUrl: redirectUrl|default(null)
+                }) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'layouts/admin_layout.html.twig' %}
+
+{% block title %}{{ 'admin.products.title'|trans }} - NightMarket{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-header-content">
+        <div>
+            <h1>{{ 'admin.products.title'|trans }}</h1>
+            <p class="admin-subtitle">{{ 'admin.products.subtitle'|trans }}</p>
+        </div>
+        <a href="{{ path('app_admin_product_new') }}" class="btn btn-primary">
+            {{ 'admin.products.add_product'|trans }}
+        </a>
+    </div>
+</div>
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-error">{{ message }}</div>
+{% endfor %}
+
+{% if productsData is empty %}
+    <div class="empty-state">
+        <p>{{ 'admin.products.no_products'|trans }}</p>
+        <a href="{{ path('app_admin_product_new') }}" class="btn btn-primary">
+            {{ 'admin.products.add_product'|trans }}
+        </a>
+    </div>
+{% else %}
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>{{ 'admin.products.table.image'|trans }}</th>
+                    <th>{{ 'admin.products.table.name'|trans }}</th>
+                    <th>{{ 'admin.products.table.category'|trans }}</th>
+                    <th>{{ 'admin.products.table.price'|trans }}</th>
+                    <th>{{ 'admin.products.table.stock'|trans }}</th>
+                    <th>{{ 'admin.products.table.status'|trans }}</th>
+                    <th>{{ 'admin.products.table.images_count'|trans }}</th>
+                    <th>{{ 'admin.products.table.actions'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in productsData %}
+                    {% set product = data.product %}
+                    <tr>
+                        <td class="product-image">
+                            {% if product.images|length > 0 %}
+                                <img src="{{ product.images.first.url }}" alt="{{ product.images.first.altText }}" class="product-thumbnail">
+                            {% else %}
+                                <div class="product-no-image">{{ 'admin.products.no_image'|trans }}</div>
+                            {% endif %}
+                        </td>
+                        <td class="product-name">{{ product.name }}</td>
+                        <td>{{ product.category.name }}</td>
+                        <td class="product-price">{{ product.price }} €</td>
+                        <td class="text-center">
+                            <span class="badge">{{ product.stock }}</span>
+                        </td>
+                        <td>
+                            {% set statusClass = '' %}
+                            {% if product.status.value == 'disponible' %}
+                                {% set statusClass = 'badge-success' %}
+                            {% elseif product.status.value == 'en_rupture' %}
+                                {% set statusClass = 'badge-danger' %}
+                            {% else %}
+                                {% set statusClass = 'badge-warning' %}
+                            {% endif %}
+                            <span class="badge {{ statusClass }}">{{ product.status.label|trans }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge">{{ data.imagesCount }}</span>
+                        </td>
+                        <td class="actions">
+                            <a href="{{ path('app_admin_product_edit', {id: product.id}) }}" class="btn btn-sm btn-secondary" title="{{ 'common.edit'|trans }}">
+                                {{ 'common.edit'|trans }}
+                            </a>
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-danger"
+                                data-action="delete-product"
+                                data-product-id="{{ product.id }}"
+                                data-product-name="{{ product.name }}"
+                                title="{{ 'common.delete'|trans }}"
+                            >
+                                {{ 'common.delete'|trans }}
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {{ include('admin/_pagination.html.twig') }}
+{% endif %}
+
+{{ include('admin/products/_delete_modal.html.twig') }}
+{% endblock %}

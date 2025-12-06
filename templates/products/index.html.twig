@@ -1,0 +1,19 @@
+{% extends 'layouts/main_layout.html.twig' %}
+
+{% block title %}{{ 'products.title'|trans }} - NightMarket{% endblock %}
+
+{% block content %}
+<div class="products-page">
+    <div class="products-header">
+        <div class="products-header-content">
+            <h1 class="products-title">{{ 'products.title'|trans }}</h1>
+            <p class="products-subtitle">{{ 'products.subtitle'|trans }}</p>
+        </div>
+    </div>
+
+    {{ component('ProductSearch', {
+        query: app.request.query.get('query', ''),
+        sort: app.request.query.get('sort', 'name_asc')
+    }) }}
+</div>
+{% endblock %}

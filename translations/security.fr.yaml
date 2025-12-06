@@ -1,0 +1,16 @@
+# Security messages
+login:
+  invalid_credentials: "Identifiants invalides."
+  account_disabled: "Votre compte a été désactivé."
+  account_locked: "Votre compte a été verrouillé."
+
+access:
+  denied: "Accès refusé."
+  forbidden: "Vous n'avez pas l'autorisation d'accéder à cette ressource."
+
+logout:
+  success: "Vous avez été déconnecté avec succès."
+
+register:
+  success: "Votre compte a été créé avec succès."
+  email_exists: "Cette adresse email est déjà utilisée."

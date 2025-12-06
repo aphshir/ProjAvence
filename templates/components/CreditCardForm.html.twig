@@ -1,0 +1,154 @@
+<div {{ attributes }}
+     class="credit-card-form-component"
+     data-controller="card-validation"
+>
+    {% if isSuccess %}
+        <div class="alert alert-success">
+            {{ 'profile.card.messages.saved'|trans }}
+        </div>
+    {% endif %}
+
+    {{ form_start(form, {
+        'attr': {
+            'data-model': 'on(change)|*',
+            'class': 'credit-card-collection-form'
+        }
+    }) }}
+
+    <div class="credit-cards-container">
+        {% for index, cardForm in form.creditCards %}
+            <div class="credit-card-item" data-card-index="{{ index }}">
+                <div class="card-header">
+                    <span class="card-number-label">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="14" x="2" y="5" rx="2"/>
+                            <line x1="2" x2="22" y1="10" y2="10"/>
+                        </svg>
+                        {{ 'profile.card.card_label'|trans }} {{ loop.index }}
+                    </span>
+                    <button
+                        type="button"
+                        class="btn btn-link btn-danger btn-remove-card"
+                        data-action="live#action"
+                        data-live-action-param="removeCollectionItem"
+                        data-live-name-param="{{ form.creditCards.vars.full_name }}"
+                        data-live-index-param="{{ index }}"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18"/>
+                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                        </svg>
+                        {{ 'profile.actions.delete'|trans }}
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(cardForm.number, null, {'label_attr': {'class': 'form-label'}}) }}
+                    <div class="input-wrapper">
+                        {{ form_widget(cardForm.number, {
+                            'attr': {
+                                'class': 'form-input' ~ (cardForm.number.vars.errors|length ? ' is-invalid' : ''),
+                                'data-card-validation-target': 'numberInput',
+                                'data-action': 'input->card-validation#validateNumber blur->card-validation#validateNumber'
+                            }
+                        }) }}
+                        <span class="validation-icon{% if cardForm.number.vars.errors|length %} invalid{% endif %}" data-card-validation-target="numberIcon">
+                            {% if cardForm.number.vars.errors|length %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                            {% endif %}
+                        </span>
+                    </div>
+                    {{ form_errors(cardForm.number) }}
+                    <span class="js-validation-error" data-card-validation-target="numberError"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group form-group-half">
+                        {{ form_label(cardForm.expirationDate, null, {'label_attr': {'class': 'form-label'}}) }}
+                        <div class="input-wrapper">
+                            {{ form_widget(cardForm.expirationDate, {
+                                'attr': {
+                                    'class': 'form-input' ~ (cardForm.expirationDate.vars.errors|length ? ' is-invalid' : ''),
+                                    'data-card-validation-target': 'expirationInput',
+                                    'data-action': 'input->card-validation#validateExpiration blur->card-validation#validateExpiration'
+                                }
+                            }) }}
+                            <span class="validation-icon{% if cardForm.expirationDate.vars.errors|length %} invalid{% endif %}" data-card-validation-target="expirationIcon">
+                                {% if cardForm.expirationDate.vars.errors|length %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                                {% endif %}
+                            </span>
+                        </div>
+                        {{ form_errors(cardForm.expirationDate) }}
+                        <span class="js-validation-error" data-card-validation-target="expirationError"></span>
+                    </div>
+
+                    <div class="form-group form-group-half">
+                        {{ form_label(cardForm.cvv, null, {'label_attr': {'class': 'form-label'}}) }}
+                        <div class="input-wrapper">
+                            {{ form_widget(cardForm.cvv, {
+                                'attr': {
+                                    'class': 'form-input' ~ (cardForm.cvv.vars.errors|length ? ' is-invalid' : ''),
+                                    'data-card-validation-target': 'cvvInput',
+                                    'data-action': 'input->card-validation#validateCvv blur->card-validation#validateCvv'
+                                }
+                            }) }}
+                            <span class="validation-icon{% if cardForm.cvv.vars.errors|length %} invalid{% endif %}" data-card-validation-target="cvvIcon">
+                                {% if cardForm.cvv.vars.errors|length %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                                {% endif %}
+                            </span>
+                        </div>
+                        {{ form_errors(cardForm.cvv) }}
+                        <span class="js-validation-error" data-card-validation-target="cvvError"></span>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-cards-message">
+                <p>{{ 'profile.card.no_cards'|trans }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="form-actions-group">
+        <button
+            type="button"
+            class="btn btn-secondary btn-add-card"
+            data-action="live#action"
+            data-live-action-param="addCollectionItem"
+            data-live-name-param="{{ form.creditCards.vars.full_name }}"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/>
+                <path d="M12 5v14"/>
+            </svg>
+            {{ 'profile.card.add_another'|trans }}
+        </button>
+
+        <div class="form-actions">
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-action="live#action"
+                data-live-action-param="save"
+                data-loading="addClass(loading)"
+            >
+                <span class="btn-text">{{ 'profile.actions.save'|trans }}</span>
+                <span class="btn-loading">
+                    <svg class="spinner" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="spinner-circle" cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3"/>
+                    </svg>
+                </span>
+            </button>
+            {% if not isCheckoutMode %}
+                <a href="{{ path('app_profile') }}" class="btn btn-secondary">
+                    {{ 'profile.actions.cancel'|trans }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>
