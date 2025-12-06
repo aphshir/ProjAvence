@@ -9,7 +9,7 @@ petit message d'excsue: j'ai tout fait en local comme un singouin et dcp j'ai in
 Plateforme e-commerce sur le thème Valorant
 
 ## Installation
-
+/!\ si ça marche pas il faut copier [mon PHP.ini](https://pastebin.com/VJFWasMV) car il risque d'y avoir de manquer des modules
 ```bash
 git clone git@github.com:aphshir/ProjAvence.git
 cd ProjSecretAvence
